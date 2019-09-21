@@ -1,18 +1,26 @@
 import { 
-  getMovies, 
-  getById, 
-  addMovie,
-  deleteMovie } from './db';
+  getTestMovies, 
+  getTestMovieById, 
+  addTestMovie,
+  deleteTestMovie, 
+
+  getMovie,
+  getMovies,
+  getSuggestions
+} from './db';
 
 const resolvers = {
   Query: {
-    movies: () => getMovies(),
-    movie: (_, { id }) => getById(id),
-
+    testMovies: () => getTestMovies(),
+    testMovie: (_, { id }) => getTestMovieById(id),
+    
+    movies: (_, { limit, rating }) => getMovies(limit, rating),
+    movie: (_, { id }) => getMovie(id),
+    suggestions: (_, { id }) => getSuggestions(id),
   },
   Mutation: {
-    addMovie: (_, {name, score}) => addMovie(name, score),
-    deleteMovie: (_, {id}) => deleteMovie(id),
+    addTestMovie: (_, {name, score}) => addTestMovie(name, score),
+    deleteTestMovie: (_, {id}) => deleteTestMovie(id),
   }
 };
 

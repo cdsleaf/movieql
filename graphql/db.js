@@ -1,4 +1,53 @@
-let movies = [
+import axios from "axios";
+
+const BASE_URL = "https://yts.am/api/v2/";
+const LIST_MOVIES_URL = `${BASE_URL}list_movies.json`;
+const MOVIE_DETAILS_URL = `${BASE_URL}movie_details.json`;
+const MOVIE_SUGGESTIONS_URL = `${BASE_URL}movie_suggestions.json`;
+
+export const getMovies = async (limit, rating) => {
+  const {
+    data: {
+      data: { movies }
+    }
+  } = await axios(LIST_MOVIES_URL, {
+    params: {
+      limit, 
+      minimum_rating: rating
+    }
+  });
+  return movies;
+};
+
+export const getMovie = async id => {
+  const {
+    data: {
+      data: { movie }
+    }
+  } = await axios(MOVIE_DETAILS_URL, {
+    params: {
+      movie_id: id
+    }
+  });
+  return movie;
+}
+
+export const getSuggestions = async id => {
+  const {
+    data: {
+      data: { movies }
+    }
+  } = await axios(MOVIE_SUGGESTIONS_URL, {
+    params: {
+      movie_id: id
+    }
+  });
+  return movies;
+}
+
+///dummy movies
+
+let testMovies = [
   {
     id: "0",
     name: "Star Wars - The new one",
@@ -21,29 +70,29 @@ let movies = [
   }
 ];
 
-export const getMovies = () => movies;
+export const getTestMovies = () => testMovies;
 
-export const getById = id => {
-  const filteredMovie = movies.filter(movie => id === movie.id);
+export const getTestMovieById = id => {
+  const filteredMovie = testMovies.filter(movie => id === movie.id);
   return filteredMovie[0];
 }
 
-export const deleteMovie = (id) => {
-  const cleanedMovies = movies.filter(movie => id !== movie.id);
-  if(movies.length > cleanedMovies.length){
-    movies = cleanedMovies;
+export const deleteTestMovie = (id) => {
+  const cleanedMovies = testMovies.filter(movie => id !== movie.id);
+  if(testMovies.length > cleanedMovies.length){
+    testMovies = cleanedMovies;
     return true;
   }else{
     return false;
   }
 }
 
-export const addMovie = (name, score) => {
+export const addTestMovie = (name, score) => {
   const newMovie = {
-    id: `${movies.length+1}`,
+    id: `${testMovies.length+1}`,
     name,
     score
   };
-  movies.push(newMovie);
+  testMovies.push(newMovie);
   return newMovie;
 }
